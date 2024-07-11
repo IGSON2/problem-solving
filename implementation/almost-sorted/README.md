@@ -85,3 +85,48 @@ func f(arr []int) {
     }
 }
 ```
+
+## 답안 확인 후 재 풀이
+```go
+func almostSorted(arr []int32) {
+    sorted := make([]int32,len(arr))
+    copy(sorted,arr)
+    sort.Slice(sorted,func(i,j int)bool{
+        return sorted[i]<sorted[j]
+    })
+    
+    diff := make([]int,0)
+    for i := 0; i < len(arr); i++{
+        if arr[i] != sorted[i]{
+            diff = append(diff, i)
+        }
+    }
+    
+    switch {
+        case len(diff) == 0:
+            fmt.Println("yes")
+            return
+        case len(diff) == 2:
+            i,j := diff[0],diff[1]
+            if arr[j] <= arr[i+1] && arr[j-1] <= arr[i]{
+                fmt.Printf("yes\nswap %d %d\n",i+1,j+1)
+            }
+        default:
+            for i := 0; i < len(diff)-1; i++{
+                if arr[diff[i]] < arr[diff[i+1]]{
+                    fmt.Println("no")
+                    return
+                }
+            }
+            i,j := diff[0],diff[len(diff)-1]
+            a,s := arr[i:j+1],sorted[i:j+1]
+            for k := 0; k < len(a); k++{
+                if a[len(a)-k-1] != s[k]{
+                    fmt.Println("no")
+                    return
+                }
+            }
+            fmt.Printf("yes\nreverse %d %d\n",i+1,j+1)
+    }
+}
+```
