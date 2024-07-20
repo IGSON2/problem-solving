@@ -1,4 +1,4 @@
-package ps05
+package inseong
 
 import (
 	"fmt"
@@ -33,6 +33,6 @@ func TestPs05(t *testing.T) {
 		}
 	}
 
-	ps05(N, arr)
+	Ps05(N, arr)
 
 }

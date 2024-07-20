@@ -1,9 +1,11 @@
-package ps03
+package inseong
 
 import (
 	"bufio"
 	"fmt"
 	"net"
+	"os"
+	"strings"
 )
 
 const (
@@ -11,8 +13,10 @@ const (
 )
 
 func Ps03() {
+	ch := make(chan struct{})
+
 	s := NewServer(addr)
-	go s.Listen()
+	go s.Listen(ch)
 	fmt.Printf("server listening on %s.\n", addr)
 
 	c := NewClient(addr)
@@ -20,7 +24,6 @@ func Ps03() {
 	defer s.Close()
 	defer c.conn.Close()
 
-	ch := make(chan struct{})
 	go func() {
 		for {
 			fmt.Print(c.Read())
@@ -28,12 +31,15 @@ func Ps03() {
 		}
 	}()
 
+	<-ch
+	reader := bufio.NewReader(os.Stdin)
 	for {
-		var msg string
+		fmt.Print("Enter message: ")
+		msg, _ := reader.ReadString('\n')
+		msg = strings.TrimSpace(msg)
 		if msg == "exit" {
 			break
 		}
-		fmt.Scanln(&msg)
 		c.Write(msg)
 		<-ch
 	}
@@ -53,28 +59,27 @@ func NewServer(addr string) *Server {
 
 }
 
-func (s *Server) Listen() {
+func (s *Server) Listen(ready chan<- struct{}) {
 	for {
 		conn, err := s.Listener.Accept()
 		if err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			return
 		}
 		fmt.Printf("new connection from %s\n", conn.RemoteAddr())
+
+		ready <- struct{}{}
 
 		go func(c net.Conn) {
 			scanner := bufio.NewScanner(c)
 			for scanner.Scan() {
 				msg := scanner.Text()
-				s.Write(conn, fmt.Sprintf("server says : %s", msg))
+				_, err := conn.Write([]byte(fmt.Sprintf("server says : %s\n", msg)))
+				if err != nil {
+					panic(err)
+				}
 			}
 		}(conn)
-	}
-}
-
-func (s *Server) Write(conn net.Conn, msg string) {
-	_, err := conn.Write([]byte(msg + "\n"))
-	if err != nil {
-		panic(err)
 	}
 }
 

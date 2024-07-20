@@ -1,7 +1,9 @@
 package main
 
-import "coding_test/vueron/ps03"
+import "coding_test/vueron/inseong"
 
 func main() {
-	ps03.Ps03()
+	inseong.Ps01()
+	inseong.Ps02()
+	inseong.Ps03()
 }
