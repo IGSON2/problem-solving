@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/archive",
+            "program": "${workspaceFolder}",
             "console": "integratedTerminal",
         }
     ]
