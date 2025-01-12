@@ -31,25 +31,3 @@ func solution(order []int) int {
 
 	return result
 }
-
-// 더 간결한 풀이
-func betterSolution(order []int) int {
-	answer := 0
-	list := make([]int, len(order))
-	for i, v := range order { // order가 [1, 5, 3, 4, 2]면 list는 [0, 2, 3, 4, 1]
-		list[v-1] = i
-	}
-	var s []int
-	for _, v := range list {
-		if v == answer {
-			answer += 1
-		} else {
-			s = append(s, v)
-		}
-		for 0 < len(s) && s[len(s)-1] == answer {
-			answer += 1
-			s = s[:len(s)-1]
-		}
-	}
-	return answer
-}
