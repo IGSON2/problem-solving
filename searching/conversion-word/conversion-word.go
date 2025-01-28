@@ -1,25 +1,20 @@
 package conversionword
 
-import "strings"
-
 func solution(begin string, target string, words []string) int {
 	neighbor := make(map[string][]string)
+	wordLength := len(begin)
 
-	if !strings.Contains(strings.Join(words, ""), target) {
-		return 0
-	}
 	newWords := []string{begin}
 	newWords = append(newWords, words...)
 
 	for i := 0; i < len(newWords); i++ {
 		wordA := newWords[i]
-		eleA := strings.Split(wordA, "")
 
 		for j := i + 1; j < len(newWords); j++ {
 			wordB := newWords[j]
 			compareCnt := 0
-			for k, e := range eleA {
-				if k == strings.Index(wordB, e) {
+			for k := 0; k < wordLength; k++ {
+				if wordA[k] == wordB[k] {
 					compareCnt++
 				}
 			}
