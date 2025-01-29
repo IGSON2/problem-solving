@@ -3,8 +3,8 @@ package bestalbum
 import "testing"
 
 func TestSolution(t *testing.T) {
-	genres := []string{"classic", "pop", "classic", "classic", "pop"}
-	plays := []int{500, 600, 150, 800, 2500}
+	genres := []string{"kpop", "kpop", "pop", "classic", "classic", "pop"}
+	plays := []int{500, 500, 600, 150, 1000, 300}
 	result := solution(genres, plays)
 	t.Log(result)
 }
