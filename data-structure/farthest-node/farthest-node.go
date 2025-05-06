@@ -33,6 +33,7 @@ func bfs() {
 
 		for _, child := range tree[n.val] {
 			if !visited[child] {
+				visited[child] = true
 				queue = append(queue, node{child, n.depth + 1})
 			}
 		}
