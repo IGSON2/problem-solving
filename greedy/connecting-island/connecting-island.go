@@ -1,10 +1,12 @@
-package connectionisland
+package connectingisland
 
-import "sort"
+import (
+	"sort"
+)
 
 func solution(n int, costs [][]int) int {
 	result := 0
-	parents := make(map[int][]int)
+	nodes := make(map[int][]int, 0)
 
 	sort.Slice(costs, func(i, j int) bool {
 		return costs[i][2] < costs[j][2]
@@ -12,7 +14,9 @@ func solution(n int, costs [][]int) int {
 
 	for _, c := range costs {
 		from, to, cost := c[0], c[1], c[2]
-		if !isTraversal(parents, from, to, make(map[int]bool)) {
+		if !isTraversal(nodes, from, to, make(map[int]bool)) {
+			nodes[from] = append(nodes[from], to)
+			nodes[to] = append(nodes[to], from)
 			result += cost
 		}
 	}
@@ -20,26 +24,23 @@ func solution(n int, costs [][]int) int {
 	return result
 }
 
-func isTraversal(parents map[int][]int, from, to int, visit map[int]bool) bool {
+func isTraversal(nodes map[int][]int, from, to int, visit map[int]bool) bool {
 	if visit[from] {
 		return false
 	}
 
-	routes, exist := parents[from]
-	if !exist {
-		return false
-	}
+	visit[from] = true
 
-	for _, r := range routes {
-		if visit[r] {
-			return false
+	for _, v := range nodes[from] {
+		if visit[v] {
+			continue
 		}
 
-		if r == to {
+		if v == to {
 			return true
 		}
 
-		if isTraversal(parents, r, to, visit) {
+		if isTraversal(nodes, v, to, visit) {
 			return true
 		}
 	}
