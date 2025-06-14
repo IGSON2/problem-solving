@@ -4,7 +4,7 @@ import "testing"
 
 func TestRoutingTrip(t *testing.T) {
 	// tickets := [][]string{{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}}
-	tickets := [][]string{{"ICN", "AAA"}, {"ICN", "BBB"}, {"BBB", "ICN"}} // 반례 해겲 못함
+	tickets := [][]string{{"ICN", "AAA"}, {"ICN", "BBB"}, {"BBB", "ICN"}} // 반례 해결 못함
 	result := solution(tickets)
 	t.Log(result)
 }
